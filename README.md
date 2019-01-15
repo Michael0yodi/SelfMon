@@ -15,3 +15,7 @@ Installation:
 * Ask selfmon.co.uk to add your webserver under URL Calling (Ex. http://yourdomainexample.com/control.php)
 
 * Done!
+
+Note:
+
+http://yoursite.com/status/monstatus.txt can be used with ex. Home assistant to read and set sensors where you can automate based on the Selfmon status.
