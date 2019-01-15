@@ -1,8 +1,8 @@
 <?php
-
-mkdir("/tmp/selfmondir/");
-$aActionFile = fopen("/tmp/selfmondir/selfmon_action.log", "w") or die("Unable to open Action-file!");
-$aDebugFile = fopen("/tmp/selfmondir/selfmon_debug.log", "a") or die("Unable to open Debug-file!");
+mkdir("/tmp/selfmonlog/");
+$aActionFile = fopen("/tmp/selfmon_action.log", "w") or die("Unable to open A-file!");
+$aStatusFile = fopen("status/monstatus.txt", "w") or die("Unable to open S-file!");
+$aDebugFile = fopen("/tmp/selfmonlog/selfmon_debug.log", "a") or die("Unable to open D-file!");
 $txt =  $_GET['payload'];
 $txt = str_replace(array("\n", "\t", "\r"), ';', $txt);
 $txt .= "\n";
@@ -20,19 +20,20 @@ $sActionTxt = 'Normal;On';
 if (preg_match('/Opening report. System disarmed./',$txt))
 $sActionTxt = 'Normal;Off';
 
-
 // Echo ActionTxt result
-echo $txt; 
+echo $txt; //debug print
 echo 'status:';
 echo $sActionTxt;
 
-// Write debug information 
+// Write detected actions
 fwrite($aDebugFile, $txt);
 fclose($aDebugFile);
-
-// Write detected actions
 fwrite($aActionFile, $sActionTxt);
 fclose($aActionFile);
-chmod("/tmp/selfmondir/selfmon_action.log", 0666);
+fwrite($aStatusFile, $sActionTxt);
+fclose($aStatusFile);
+
+chmod("/tmp/selfmon_action.log", 0666);
 
 ?>
+
