@@ -1,0 +1,14 @@
+  alias: Turn off switch(light) when house is armed
+  initial_state: true
+  trigger:
+  - entity_id: sensor.alarm
+    platform: state
+    to: Normal;On
+  condition: []
+  action:
+  - data:
+      entity_id: switch.myoutlet1
+    service: homeassistant.turn_off
+  - data:
+      entity_id: switch.myoutlet2
+    service: homeassistant.turn_off
