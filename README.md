@@ -19,3 +19,5 @@ Installation:
 Note:
 
 http://yourdomainexample.com/status/monstatus.txt can be used with ex. Home assistant to read and set sensors where you can automate based on the Selfmon status.
+
+see configuration.yaml and alarm_automation.yaml for examples.
