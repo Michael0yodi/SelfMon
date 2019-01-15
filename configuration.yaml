@@ -1,0 +1,7 @@
+## your file here ###
+
+  - platform: command_line
+    command: python3 -c "import requests; print(requests.get('http://yourdomainexample.com/status/monstatus.txt').text)"
+    name: Alarm
+    
+## your file here ###
