@@ -18,4 +18,4 @@ Installation:
 
 Note:
 
-http://yoursite.com/status/monstatus.txt can be used with ex. Home assistant to read and set sensors where you can automate based on the Selfmon status.
+http://yourdomainexample.com/status/monstatus.txt can be used with ex. Home assistant to read and set sensors where you can automate based on the Selfmon status.
