@@ -46,8 +46,8 @@ Exampel:
 ![HAImage](https://github.com/Michael0yodi/SelfMon/blob/master/2019-10-29%2016_21_50-Window.png)
 
 
-Other:
-Control.sh contains example to trigger actions directly on the server, run it with cron (Ex. */5 * * * * /path/to/control.sh)
+**Other:**
+* Control.sh contains example to trigger actions directly on the server, run it with cron (Ex. */5 * * * * /path/to/control.sh)
 
 
 
