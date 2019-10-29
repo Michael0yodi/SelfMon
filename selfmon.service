@@ -1,0 +1,16 @@
+[Unit]
+Description=Java SelfMon
+[Service]
+User=<linux user>
+# The configuration file application.properties should be here:
+#change this to your workspace
+WorkingDirectory=/home/<linux user>
+#path to executable.
+#executable is a bash script which calls jar file
+ExecStart=/home/<linux user>/selfmon-run.sh
+SuccessExitStatus=143
+TimeoutStopSec=10
+Restart=on-failure
+RestartSec=5
+[Install]
+WantedBy=multi-user.target
