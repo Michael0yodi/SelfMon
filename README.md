@@ -1,23 +1,47 @@
 # SelfMon
-SelfMon Web Service example to allow Selfmon.co.uk to send Galaxy alarm status updates to your web server and control other actions
-Included in the example is a way to control Telldus Live 
 
-Installation:
+SelfMon Web Service example to allow Selfmon.co.uk to send Galaxy alarm status updates via LCE-01 module and your Galaxy home alarm system directly to your web server and let you control other actions based on state. 
+Included in the example is an integration to Home Assistant https://www.home-assistant.io/ and also some automations that utilize status from Selfmon integrations and also an example to trigger the SelfMon VirtualKeypad from Home Assistant.
+
+
+Basic Setup:
 
 * Enable a Web server with PHP of your choice (Ex. nginx with php)
-
 * Copy control.php to your html folder (Ex. /var/www/html/)
-
-* Copy control.sh to somewhere on your web server
-
-* Trigger control.sh with Cron (Ex. */5 * * * * /path/to/control.sh)
-
 * Ask selfmon.co.uk to add your webserver under URL Calling (Ex. http://yourdomainexample.com/control.php)
-
 * Done!
 
-Note:
+VirtualKeypoad (VKP) setup:
 
-http://yourdomainexample.com/status/monstatus.txt can be used with ex. Home assistant to read the Alarm state and allow you to craete automated rules based on the status. Remember to set the appropiate IP-filters in your webserver unless you want the document accessable to the public.
+!! This require you to run the JAR file as a service on an exsing Local server in your home
+(dont run it as root..)
 
-see configuration.yaml and alarm_automation.yaml for examples.
+* Download VKP https://www.sm-alarms.co.uk/main/getVKPfaq.php
+* Install JRE (ex apt-get install java-common)
+  Run:
+     sudo cp selfmon.service  /etc/systemd/system/syslog.service
+     sudo cp selfmon-run.sh /home/<linux user>/selfmon-run.sh
+     sudo systemctl daemon-reload
+     sudo systemctl enable selfmon.service
+     sudo systemctl start selfmon.service
+     sudo systemctl status selfmon.service
+  
+ You should see this if everything is working:
+ 
+  user@linux:/root# sudo systemctl status selfmon.service
+● selfmon.service - Java SelfMon
+   Loaded: loaded (/etc/systemd/system/selfmon.service; enabled; vendor preset: enabled)
+   Active: active (running) since Mon 2019-10-28 08:10:07 CET; 1 day 7h ago
+
+
+Home Assistant
+
+Please see example HA yaml files to read data from "Basic Setup" and also "VirtualKeypoad (VKP) setup"
+
+
+Other:
+Control.sh contains example to trigger actions directly on the server, run it with cron (Ex. */5 * * * * /path/to/control.sh)
+
+
+
+
