@@ -1,44 +1,73 @@
-<?php
-mkdir("/tmp/selfmonlog/");
-$aActionFile = fopen("/tmp/selfmon_action.log", "w") or die("Unable to open A-file!");
-$aStatusFile = fopen("status/monstatus.txt", "w") or die("Unable to open S-file!");
-$aStatusFile2 = fopen("status/monstatus2.txt", "w") or die("Unable to open S-file!");
-$aDebugFile = fopen("/tmp/selfmonlog/selfmon_debug.log", "a") or die("Unable to open D-file!");
-$txt =  $_GET['payload'];
-$txt = str_replace(array("\n", "\t", "\r"), ';', $txt);
-$txt = str_replace("▒", 'a', $txt);
-$txt .= "\n";
+	<?php
 
-if (preg_match('/Partially armed system disarmed./',$txt))
-$sActionTxt = 'Night;Off';
+	// Setup locations
+	mkdir("/tmp/selfmonlog/");
+	$ajsonFile = fopen("status/selfmon.json", "w") or die("Unable to open json file!");
+	$aDebugFile = fopen("/tmp/selfmonlog/selfmon_debug.log", "a") or die("Unable to open debug file!");
+	$aDebugFileRaw = fopen("/tmp/selfmonlog/selfmon_debug_raw.log", "a") or die("Unable to open debug raw file!");
 
-if (preg_match('/Close Area. The system partially armed./',$txt))
-$sActionTxt = 'Night;On';
+		// Catch payload
+		$txt =  $_GET['payload'];
+		
+		// Store payload as raw
+		fwrite($aDebugFileRaw, $txt);
+		fclose($aDebugFileRaw);
 
-if (preg_match('/System armed normally./',$txt))
-$sActionTxt = 'Normal;On';
+		// Modify input data
+		$txt = str_replace(array("\n", "\t", "\r"), ';', $txt);
+		$txt = str_replace("▒", 'a', $txt);
+		$txt .= "\n";
+		
+		// Store payload after modification
+		fwrite($aDebugFile, $txt);
+		fclose($aDebugFile);
 
-if (preg_match('/Opening report. System disarmed./',$txt))
-$sActionTxt = 'Normal;Off';
+		// Catch Xtra and Usr attributes
+		preg_match('/Xtra=.+/',$txt,$sActionTxtXtra);
+		preg_match('/Usr=.[0-9]{1,3}/',$txt,$sActionTxtUsr);
 
-preg_match('/Xtra=.[A-z]{1,10}.[A-z]{2}.[A-z].[A-z]{1,10}/',$txt,$sActionTxtXtra);
-preg_match('/Usr=.[0-9]{1,3}/',$txt,$sActionTxtUsr);
+			// Set status based on payload information
+			if (preg_match('/[S-s]ystem disarmed./',$txt))
+			$sActionTxtStat = 'Off';
 
-echo $txt; //debug print
-echo 'status:';
-echo $sActionTxt;
+			if (preg_match('/system partially armed./',$txt))
+			$sActionTxtStat = 'NightOn';
 
-fwrite($aDebugFile, $txt);
-fclose($aDebugFile);
-fwrite($aActionFile, $sActionTxt);
-fclose($aActionFile);
-fwrite($aStatusFile, $sActionTxt);
-fclose($aStatusFile);
+			if (preg_match('/System armed normally./',$txt))
+			$sActionTxtStat = 'NormalOn';
 
-fwrite($aStatusFile2, $sActionTxt . ";" . substr($sActionTxtXtra[0],6) . ";" . substr($sActionTxtUsr[0],5));
-fclose($aStatusFile2);
+			if (preg_match('/System armed automatically./',$txt))
+			$sActionTxtStat = 'AutoOn';
 
-chmod("/tmp/selfmon_action.log", 0666);
+			if (preg_match('/violated/',$txt))
+			$sActionTxtStat = 'Alarm';
 
-?>
+			if (preg_match('/Fire alarm/',$txt))
+			$sActionTxtStat = 'Fire';
 
+			if (preg_match('/Local programming has begun./',$txt))
+			$sActionTxtStat = 'Program';
+
+			if (preg_match('/Local programming ended./',$txt))
+			$sActionTxtStat = 'Off';
+
+			if (preg_match('/\A\z/', $sActionTxtStat))
+			$sActionTxtStat = 'Unknown';
+
+	// Create json 
+	$jsonarray = array(
+		'status' => $sActionTxtStat,
+		'xtra' => substr($sActionTxtXtra[0],6),
+		'usr' => substr($sActionTxtUsr[0],5)
+	);
+
+	$jsonout = json_encode($jsonarray);
+
+	// Show json as web-echo
+	echo $jsonout;
+
+	// Store json to file
+	fwrite($ajsonFile, $jsonout );
+	fclose($ajsonFile);
+
+	?>
