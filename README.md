@@ -4,14 +4,14 @@ SelfMon Web Service example to allow Selfmon.co.uk to send Galaxy alarm status u
 Included in the example is an integration to Home Assistant https://www.home-assistant.io/ and also some automations that utilize status from Selfmon integrations and also an example to trigger the SelfMon VirtualKeypad and read the LCD display from your alarm system and integrate all of this in Home Assistant.
 
 
-**Basic Setup:
+**Basic Setup:**
 
 * Enable a Web server with PHP of your choice (Ex. nginx with php)
 * Copy control.php to your html folder (Ex. /var/www/html/)
 * Ask selfmon.co.uk to add your webserver under URL Calling (Ex. http://yourdomainexample.com/control.php)
 * Done!
 
-**VirtualKeypoad (VKP) setup:
+**VirtualKeypoad (VKP) setup:**
 
 !! This require you to run the JAR file as a service on an exsing Local server in your home
 (dont run it as root..)
@@ -38,7 +38,7 @@ Included in the example is an integration to Home Assistant https://www.home-ass
    * Setup a Cron job: * * * * * killall generate_json.sh ; /path/to/generate_json.sh
 
 
-**Home Assistant
+**Home Assistant**
 
 Please see example HA yaml files to read data from "Basic Setup" and also "VirtualKeypoad (VKP) setup"
 Exampel:
