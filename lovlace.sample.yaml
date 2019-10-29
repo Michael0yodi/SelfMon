@@ -1,31 +1,10 @@
 entities:
-  - entity: script.selfmon_arm_night
-    icon: 'mdi:weather-night'
-    name: Natt
-    tap_action: none
-    hold_action:
-      action: call-service
-      service: script.selfmon_arm_night
-  - entity: script.selfmon_arm_normal
+  - entity: script.selfmon_arm_away
     icon: 'mdi:security'
-    name: Påslag
+    name: Arm - Away
     tap_action: none
     hold_action:
       action: call-service
-      service: script.selfmon_arm_normal
-  - entity: script.selfmon_arm_home
-    icon: 'mdi:home'
-    name: Avslag
-    tap_action: none
-    hold_action:
-      action: call-service
-      service: script.selfmon_arm_home
-  - entity: script.selfmon_arm_abort
-    icon: 'mdi:cancel'
-    name: Avbryt
-    tap_action: none
-    hold_action:
-      action: call-service
-      service: script.selfmon_arm_abort
+      service: script.selfmon_arm_away
 show_state: false
 type: glance
