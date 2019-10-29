@@ -18,13 +18,13 @@ VirtualKeypoad (VKP) setup:
 
 * Download VKP https://www.sm-alarms.co.uk/main/getVKPfaq.php
 * Install JRE (ex apt-get install java-common)
-  Run:
-     sudo cp selfmon.service  /etc/systemd/system/syslog.service
-     sudo cp selfmon-run.sh /home/<linux user>/selfmon-run.sh
-     sudo systemctl daemon-reload
-     sudo systemctl enable selfmon.service
-     sudo systemctl start selfmon.service
-     sudo systemctl status selfmon.service
+*  Run:
+   *  sudo cp selfmon.service  /etc/systemd/system/syslog.service
+   *  sudo cp selfmon-run.sh /home/<linux user>/selfmon-run.sh
+   *  sudo systemctl daemon-reload
+   *  sudo systemctl enable selfmon.service
+   *  sudo systemctl start selfmon.service
+   *  sudo systemctl status selfmon.service
   
  You should see this if everything is working:
  
