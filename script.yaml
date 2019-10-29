@@ -5,3 +5,4 @@ selfmon_arm_away:
         rnd: 3348614
         cmd: 11
         cnt: 1
+// Check the VirtualKeypad web service source code for a complete information about "cmd"(i.e keypress) options
