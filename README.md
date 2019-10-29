@@ -41,6 +41,9 @@ VirtualKeypoad (VKP) setup:
 Home Assistant
 
 Please see example HA yaml files to read data from "Basic Setup" and also "VirtualKeypoad (VKP) setup"
+Exampel:
+
+![HAImage](https://github.com/Michael0yodi/SelfMon/blob/master/2019-10-29%2016_21_50-Window.png)
 
 
 Other:
