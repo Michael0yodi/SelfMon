@@ -1,3 +1,5 @@
+
+// Button to Arm your system!
 entities:
   - entity: script.selfmon_arm_away
     icon: 'mdi:security'
@@ -8,3 +10,16 @@ entities:
       service: script.selfmon_arm_away
 show_state: false
 type: glance
+
+// See LCD Display status (using secondary-info https://github.com/custom-cards/secondaryinfo-entity-row)
+
+entities:
+  - entity: sensor.alarm2lcd
+    name: My Galaxy LCD
+    secondary_info: >-
+      [[ sensor.galaxy.attributes.lcda ]] <br> [[
+      sensor.galaxy.attributes.lcdb ]]
+    type: 'custom:secondaryinfo-entity-row'
+show_header_toggle: false
+type: entities
+
