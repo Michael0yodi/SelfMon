@@ -21,5 +21,9 @@
     larm_last_users:
       value_template: >
         {{ states.sensor.selfmon.attributes.usr }}
-    
+
+rest_command:
+  vkp_command:
+    url: 'http:// <your_vkp_java_server:port> /KP.xml?u={{ rnd }}&web1={{ cmd }}&counter={{ cnt }}'
+
 ## your file here ###
