@@ -1,7 +1,25 @@
 ## your file here ###
 
-  - platform: command_line
-    command: python3 -c "import requests; print(requests.get('http://yourdomainexample.com/status/monstatus.txt').text)"
-    name: Alarm
+- platform: rest
+  scan_interval: 1
+  name: Selfmon
+  json_attributes:
+    - status
+    - xtra
+    - usr
+  resource: http:// <your_web_server> /status/selfmon.json
+  value_template: '{{ value_json.status }}'
+
+- platform: template
+  sensors:
+    larm_status:
+      value_template: >
+        {{ states.sensor.selfmon.attributes.status }}
+    larm_last_changed:
+      value_template: >
+        {{ states.sensor.selfmon.attributes.xtra }}
+    larm_last_users:
+      value_template: >
+        {{ states.sensor.selfmon.attributes.usr }}
     
 ## your file here ###
