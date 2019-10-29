@@ -23,7 +23,7 @@
 		fclose($aDebugFile);
 
 		// Catch Xtra and Usr attributes
-		preg_match('/Xtra=.+/',$txt,$sActionTxtXtra);
+                preg_match('/Xtra=.+.+?(?=;Dev)/',$txt,$sActionTxtXtra);
 		preg_match('/Usr=.[0-9]{1,3}/',$txt,$sActionTxtUsr);
 
 			// Set status based on payload information
