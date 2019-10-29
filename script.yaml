@@ -1,0 +1,7 @@
+selfmon_arm_away:
+  sequence:
+    - service: rest_command.vkp_command
+      data:
+        rnd: 3348614
+        cmd: 11
+        cnt: 1
