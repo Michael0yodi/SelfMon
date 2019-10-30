@@ -1,73 +1,74 @@
-	<?php
+<?php
 
-	// Setup locations
-	mkdir("/tmp/selfmonlog/");
-	$ajsonFile = fopen("status/selfmon.json", "w") or die("Unable to open json file!");
-	$aDebugFile = fopen("/tmp/selfmonlog/selfmon_debug.log", "a") or die("Unable to open debug file!");
-	$aDebugFileRaw = fopen("/tmp/selfmonlog/selfmon_debug_raw.log", "a") or die("Unable to open debug raw file!");
+// Setup locations
+mkdir("/tmp/selfmonlog/");
+$ajsonFile = fopen("status/selfmon.json", "w") or die("Unable to open json file!");
+$aDebugFile = fopen("/tmp/selfmonlog/selfmon_debug.log", "a") or die("Unable to open debug file!");
+$aDebugFileRaw = fopen("/tmp/selfmonlog/selfmon_debug_raw.log", "a") or die("Unable to open debug raw file!");
 
-		// Catch payload
-		$txt =  $_GET['payload'];
-		
-		// Store payload as raw
-		fwrite($aDebugFileRaw, $txt);
-		fclose($aDebugFileRaw);
+        // Catch payload
+        $txt =  $_GET['payload'];
 
-		// Modify input data
-		$txt = str_replace(array("\n", "\t", "\r"), ';', $txt);
-		$txt = str_replace("▒", 'a', $txt);
-		$txt .= "\n";
-		
-		// Store payload after modification
-		fwrite($aDebugFile, $txt);
-		fclose($aDebugFile);
+        // Store payload as raw
+        fwrite($aDebugFileRaw, $txt);
+        fclose($aDebugFileRaw);
 
-		// Catch Xtra and Usr attributes
-                preg_match('/Xtra=.+.+?(?=;Dev)/',$txt,$sActionTxtXtra);
-		preg_match('/Usr=.[0-9]{1,3}/',$txt,$sActionTxtUsr);
+        // Modify input data
+        $txt = preg_replace('/[^A-Za-z0-9= \-]/', '', $txt);
+        $txt = str_ireplace("PSLAG S-Psl","Snabbpåslag", $txt);
+        $txt = str_ireplace("NATT P S-Psl","Nattpåslag", $txt);
 
-			// Set status based on payload information
-			if (preg_match('/[S-s]ystem disarmed./',$txt))
-			$sActionTxtStat = 'Off';
+        // Store payload after modification
+        fwrite($aDebugFile, $txt);
+        fclose($aDebugFile);
 
-			if (preg_match('/system partially armed./',$txt))
-			$sActionTxtStat = 'NightOn';
+        // Catch Xtra and Usr attributes
+        preg_match('/Xtra=.+.+?(?=Dev)/',$txt,$sActionTxtXtra);
+        preg_match('/Usr=.[0-9]{1,3}/',$txt,$sActionTxtUsr);
 
-			if (preg_match('/System armed normally./',$txt))
-			$sActionTxtStat = 'NormalOn';
+                // Set status based on payload information
+                if (preg_match('/[S-s]ystem disarmed/',$txt))
+                $sActionTxtStat = 'Off';
 
-			if (preg_match('/System armed automatically./',$txt))
-			$sActionTxtStat = 'AutoOn';
+                if (preg_match('/system partially armed/',$txt))
+                $sActionTxtStat = 'NightOn';
 
-			if (preg_match('/violated/',$txt))
-			$sActionTxtStat = 'Alarm';
+                if (preg_match('/System armed normally/',$txt))
+                $sActionTxtStat = 'NormalOn';
 
-			if (preg_match('/Fire alarm/',$txt))
-			$sActionTxtStat = 'Fire';
+                if (preg_match('/System armed automatically/',$txt))
+                $sActionTxtStat = 'AutoOn';
 
-			if (preg_match('/Local programming has begun./',$txt))
-			$sActionTxtStat = 'Program';
+                if (preg_match('/violated/',$txt))
+                $sActionTxtStat = 'Alarm';
 
-			if (preg_match('/Local programming ended./',$txt))
-			$sActionTxtStat = 'Off';
+                if (preg_match('/Fire alarm/',$txt))
+                $sActionTxtStat = 'Fire';
 
-			if (preg_match('/\A\z/', $sActionTxtStat))
-			$sActionTxtStat = 'Unknown';
+                if (preg_match('/Local programming has begun/',$txt))
+                $sActionTxtStat = 'Program';
 
-	// Create json 
-	$jsonarray = array(
-		'status' => $sActionTxtStat,
-		'xtra' => substr($sActionTxtXtra[0],6),
-		'usr' => substr($sActionTxtUsr[0],5)
-	);
+                if (preg_match('/Local programming ended/',$txt))
+                $sActionTxtStat = 'Off';
 
-	$jsonout = json_encode($jsonarray);
+                if (preg_match('/\A\z/', $sActionTxtStat))
+                $sActionTxtStat = 'Unknown';
 
-	// Show json as web-echo
-	echo $jsonout;
+// Create json
+$jsonarray = array(
+    'status' => $sActionTxtStat,
+    'xtra' => substr($sActionTxtXtra[0],6),
+    'usr' => substr($sActionTxtUsr[0],5)
+);
 
-	// Store json to file
-	fwrite($ajsonFile, $jsonout );
-	fclose($ajsonFile);
+$jsonout = json_encode($jsonarray);
 
-	?>
+// Show json as web-echo
+echo $jsonout;
+
+// Store json to file
+fwrite($ajsonFile, $jsonout );
+fclose($ajsonFile);
+
+?>
+
