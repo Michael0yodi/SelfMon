@@ -17,6 +17,7 @@ $aDebugFileRaw = fopen("/tmp/selfmonlog/selfmon_debug_raw.log", "a") or die("Una
         $txt = preg_replace('/[^A-Za-z0-9= \-]/', '', $txt);
         $txt = str_ireplace("PSLAG S-Psl","Snabbpåslag", $txt);
         $txt = str_ireplace("NATT P S-Psl","Nattpåslag", $txt);
+        $txt = str_ireplace("TERAKT","Återaktiverat", $txt);
 
         // Store payload after modification
         fwrite($aDebugFile, $txt);
